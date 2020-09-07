@@ -86,15 +86,23 @@ class Game
 
   def turn
     #binding.pry
-    current_move = current_player.move(@board)
+    player = current_player
+    current_move = player.move(@board)
     if !@board.valid_move?(current_move)
       turn
     else
-      @board.update(current_move, current_player)
+      #@board.update(current_move, current_player)
+      puts "Turn: #{@board.turn_count+1}"
+      @board.display
+      @board.update(current_move, player)
+      puts "#{player.token} moved #{current_move}"
+      @board.display
+
     end
   end
 
   def play
+    #binding.pry
     until over?
       turn
     end
@@ -106,23 +114,23 @@ class Game
     end
   end
 
-  def self.start
+  def start
     puts "Welcome to Tic Tac Toe!"
-    game = Game.new
+    #game = Game.new
     puts "What kind of game do you want to play? 0, 1, or 2 players?"
     puts "Type just the number: 0, 1, or 2"
     gtype_input = gets.strip
     if gtype_input == 0
-      game.player_1 == Players::Computer.new("X") && game.player_2 == Players::Computer.new("O")
+      player_1 == Players::Computer.new("X") && player_2 == Players::Computer.new("O")
     elsif gtype_input == 1
-      game.player_1 == Players::Human.new("X") && game.player_2 == Players::Computer.new("O")
-    elsif gtype_input == 2
-      game.player_1 == Players::Human.new("X") && game.player_2 == Players::Human.new("O")
+      player_1 == Players::Human.new("X") && player_2 == Players::Computer.new("O")
+    #elsif gtype_input == 2
+    #  until game.won?
+    #    game.play
+    #  end
+      #game.player_1 == Players::Human.new("X") && game.player_2 == Players::Human.new("O")
     end
-
-    until game.won?
-      game.play
-    end
+    Game.new(player_1, player_2)
   end
 
 
